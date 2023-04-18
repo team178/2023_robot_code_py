@@ -1,0 +1,17 @@
+# ----- Arm ------
+
+LOWER_ARM_MOTOR = 20
+UPPER_ARM_MOTOR = 21
+
+LOWER_ARM_HOME = 0
+UPPER_ARM_HOME = 1
+
+LOWER_ARM_ENCODER = 7
+UPPER_ARM_ENCODER = 8
+
+UPPER_ARM_PID = {"Kp": 3, "Ki": 0, "Kd": 0}
+LOWER_ARM_PID = {"Kp": 3, "Ki": 0, "Kd": 0}
+
+UPPER_ARM_FF = {"kS": 0.66617, "kG": 0.085621, "kV": 1.944, "kA": 0.046416}
+
+LOWER_ARM_FF = {"kS": 0.38834, "kG": 0.0942, "kV": 2.0427, "kA": 0.23556}

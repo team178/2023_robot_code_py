@@ -311,6 +311,12 @@ requires_python = ">=3.6"
 summary = "Binary wrapper for FRC WPIUtil library"
 
 [[package]]
+name = "setuptools"
+version = "67.6.1"
+requires_python = ">=3.7"
+summary = "Easily download, build, install, upgrade, and uninstall Python packages"
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 requires_python = ">=3.7"
@@ -349,7 +355,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 [metadata]
 lock_version = "4.2"
 groups = ["default", "dev"]
-content_hash = "sha256:adf603016519b8a99a7df75ab1205efc4541e21ea84fbb3a31caa24d06f4eab5"
+content_hash = "sha256:da345a14bb715a3cfb1660a73293eaa63c4445a2a26420beedc3d4cb8bfec60b"
 
 [metadata.files]
 "bcrypt 4.0.1" = [
@@ -724,6 +730,10 @@ content_hash = "sha256:adf603016519b8a99a7df75ab1205efc4541e21ea84fbb3a31caa24d0
     {url = "https://files.pythonhosted.org/packages/ee/b0/085caca47d45092b9391dc7457f1893d447583b7c467218831913c66cfa3/robotpy_wpiutil-2023.4.3.0-cp37-cp37m-macosx_10_16_x86_64.whl", hash = "sha256:6d16432b81a74b95ca32bd5f2a760327a957d4968f3e9f286796d57f185e5069"},
     {url = "https://files.pythonhosted.org/packages/f0/49/db90935cdef95a73ec6095440daf738a7681f10f6765c82abf26784058b1/robotpy_wpiutil-2023.4.3.0-cp310-cp310-win_amd64.whl", hash = "sha256:9a80c2f7e3466af58a41f602069c24ef84e3ae7e703b1a28f8adf910608cdf70"},
     {url = "https://files.pythonhosted.org/packages/fa/64/2769981b454d11aded75c34a090dc79e6f785718ecfde100d2a25f7af051/robotpy_wpiutil-2023.4.3.0-cp39-cp39-macosx_10_16_x86_64.whl", hash = "sha256:04c00c366fbf19a7c13d9f2c0ef7d82ccc1a117371c051895f6cf3c6a6f76f2f"},
+]
+"setuptools 67.6.1" = [
+    {url = "https://files.pythonhosted.org/packages/0b/fc/8781442def77b0aa22f63f266d4dadd486ebc0c5371d6290caf4320da4b7/setuptools-67.6.1-py3-none-any.whl", hash = "sha256:e728ca814a823bf7bf60162daf9db95b93d532948c4c0bea762ce62f60189078"},
+    {url = "https://files.pythonhosted.org/packages/cb/46/22ec35f286a77e6b94adf81b4f0d59f402ed981d4251df0ba7b992299146/setuptools-67.6.1.tar.gz", hash = "sha256:257de92a9d50a60b8e22abfcbb771571fde0dbf3ec234463212027a4eeecbe9a"},
 ]
 "tomli 2.0.1" = [
     {url = "https://files.pythonhosted.org/packages/97/75/10a9ebee3fd790d20926a90a2547f0bf78f371b2f13aa822c759680ca7b9/tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},

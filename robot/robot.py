@@ -1,26 +1,36 @@
-from wpilib import TimedRobot
+from wpilib import TimedRobot, XboxController
 
-class RobotBase:
-    def robotInit():
-        ...
+from robot.subsystems.arm import Arm, ArmPosition
 
-    def robotPeriodic():
-        ...
 
-    def disabledInit():
-        ...
+class Robot(TimedRobot):
+    arm = Arm()
 
-    def disabledPeriodic():
-        ...
+    driver = XboxController(0)
+    aux = XboxController(1)
 
-    def teleopInit():
-        ...
+    def teleopInit(self):
+        pass
 
-    def teleopPeriodic():
-        ...
+    def teleopPeriodic(self):
+        if self.aux.getBButtonPressed():
+            self.arm.set_position(ArmPosition.HOME)
 
-    def autoInit():
-        ...
+        if self.aux.getYButtonPressed():
+            self.arm.set_position(ArmPosition.SUBSTATION)
 
-    def autoPeriodic():
-        ...
+        if self.aux.getAButtonPressed():
+            self.arm.set_position(ArmPosition.LOW)
+
+        if self.aux.getXButtonPressed():
+            self.arm.set_position(ArmPosition.HIGH)
+        
+        self.arm.periodic()
+
+        print(self.arm._lower_setpoint, self.arm._upper_setpoint)
+
+    def autoInit(self):
+        pass
+
+    def autoPeriodic(self):
+        pass

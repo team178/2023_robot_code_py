@@ -2,6 +2,7 @@
 [tool.pdm.dev-dependencies]
 dev = [
     "black>=23.3.0",
+    "setuptools>=67.6.1",
 ]
 
 [project]
