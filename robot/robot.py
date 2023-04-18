@@ -1,0 +1,26 @@
+from wpilib import TimedRobot
+
+class RobotBase:
+    def robotInit():
+        ...
+
+    def robotPeriodic():
+        ...
+
+    def disabledInit():
+        ...
+
+    def disabledPeriodic():
+        ...
+
+    def teleopInit():
+        ...
+
+    def teleopPeriodic():
+        ...
+
+    def autoInit():
+        ...
+
+    def autoPeriodic():
+        ...
