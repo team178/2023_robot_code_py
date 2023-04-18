@@ -24,10 +24,8 @@ class Robot(TimedRobot):
 
         if self.aux.getXButtonPressed():
             self.arm.set_position(ArmPosition.HIGH)
-        
-        self.arm.periodic()
 
-        print(self.arm._lower_setpoint, self.arm._upper_setpoint)
+        self.arm.periodic()
 
     def autoInit(self):
         pass

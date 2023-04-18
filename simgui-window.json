@@ -5,13 +5,13 @@
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "720",
+      "height": "1043",
       "maximized": "0",
       "style": "0",
       "userScale": "2",
-      "width": "1280",
-      "xpos": "893",
-      "ypos": "541"
+      "width": "948",
+      "xpos": "964",
+      "ypos": "404"
     }
   },
   "Window": {
@@ -32,7 +32,7 @@
     },
     "###Other Devices": {
       "Collapsed": "0",
-      "Pos": "930,21",
+      "Pos": "929,21",
       "Size": "250,695"
     },
     "###System Joysticks": {
