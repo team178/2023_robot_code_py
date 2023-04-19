@@ -1,4 +1,4 @@
-# ----- Arm ------
+# ----- ------
 
 LOWER_ARM_MOTOR = 20
 UPPER_ARM_MOTOR = 21

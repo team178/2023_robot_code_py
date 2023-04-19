@@ -1,12 +1,11 @@
 from typing import Tuple
 from math import pi as PI
 
-from rev import CANSparkMax
-from wpilib import DigitalInput, DutyCycleEncoder
+from wpilib import DigitalInput, DutyCycleEncoder, SmartDashboard
 from wpimath.controller import ArmFeedforward, PIDController
+from rev import CANSparkMax
 
 from robot.constants import *
-
 
 class ArmPosition:
     """
@@ -125,3 +124,6 @@ class Arm:
             self._upper_motor.setVoltage(0)
         else:
             self._upper_motor.setVoltage(upper_v)
+
+        SmartDashboard.putNumber("lower_out", lower_out)
+        SmartDashboard.putNumber("upper_out", upper_out)
