@@ -1,5 +1,6 @@
 import wpilib
 
+
 class SparkMaxRelativeEncoder:
     def __init__(self) -> None:
         self._velocity = 0
@@ -7,11 +8,12 @@ class SparkMaxRelativeEncoder:
     def getVelocity(self):
         return self._velocity
 
+
 class CANSparkMax(wpilib.Spark):
     def __init__(self, channel: int, ignored):
-        super().__init__(channel - 8) # this is because we can't go to 20 on PWMSim
+        super().__init__(channel - 8)  # this is because we can't go to 20 on PWMSim
         self._encoder = SparkMaxRelativeEncoder()
-    
+
     def restoreFactoryDefaults(self):
         pass
 
@@ -23,7 +25,7 @@ class CANSparkMax(wpilib.Spark):
 
     def setIdleMode(self, mode):
         pass
-    
+
     class IdleMode:
         kBrake = 0
         kCoast = 1

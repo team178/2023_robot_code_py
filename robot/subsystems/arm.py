@@ -1,11 +1,18 @@
+import math
 from typing import Tuple
-from math import pi as PI
 
-from wpilib import DigitalInput, DutyCycleEncoder, SmartDashboard
+from wpilib import (
+    Color8Bit,
+    DigitalInput,
+    DutyCycleEncoder,
+    Mechanism2d,
+    SmartDashboard,
+)
 from wpimath.controller import ArmFeedforward, PIDController
 from rev import CANSparkMax
 
 from robot.constants import *
+
 
 class ArmPosition:
     """
@@ -34,7 +41,7 @@ class Arm:
     _lower_ff = ArmFeedforward(**LOWER_ARM_FF)
     _lower_con = PIDController(**LOWER_ARM_PID)
 
-    _upper_motor = CANSparkMax(UPPER_ARM_ENCODER, CANSparkMax.MotorType.kBrushless)
+    _upper_motor = CANSparkMax(UPPER_ARM_MOTOR, CANSparkMax.MotorType.kBrushless)
 
     _upper_ff = ArmFeedforward(**UPPER_ARM_FF)
     _upper_con = PIDController(**UPPER_ARM_PID)
@@ -56,6 +63,15 @@ class Arm:
 
         self._lower_motor.setInverted(True)
         self._upper_motor.setInverted(True)
+
+        self._mech_2d = Mechanism2d(100, 60)
+
+        self._mech_root = self._mech_2d.getRoot("ArmBase", 40, 15)
+        self._mech_root.appendLigament("Pylon", 15, -90, 6, Color8Bit(0, 0, 255))
+        self._mech_lower = self._mech_root.appendLigament("LowerArm", 20, 193)
+        self._mech_upper = self._mech_lower.appendLigament("UpperArm", 16, 193)
+
+        SmartDashboard.putData("ArmView", self._mech_2d)
 
     def set_position(self, pos: Tuple[float, float]) -> None:
         """
@@ -83,13 +99,13 @@ class Arm:
         """
         Get the position of the lower arm in Radians
         """
-        return self._lower_enc.getAbsolutePosition() * (2 * PI)
+        return self._lower_enc.getAbsolutePosition() * (2 * math.pi)
 
     def get_upper_position(self) -> float:
         """
         Get the position of the upper arm in Radians
         """
-        return self._upper_enc.getAbsolutePosition() * (2 * PI)
+        return self._upper_enc.getAbsolutePosition() * (2 * math.pi)
 
     def is_lower_home(self) -> bool:
         """
@@ -125,5 +141,5 @@ class Arm:
         else:
             self._upper_motor.setVoltage(upper_v)
 
-        SmartDashboard.putNumber("lower_out", lower_out)
-        SmartDashboard.putNumber("upper_out", upper_out)
+        self._mech_lower.setAngle(238 + math.degrees(self.get_lower_position()))
+        self._mech_upper.setAngle(180 - math.degrees(self.get_upper_position()))
