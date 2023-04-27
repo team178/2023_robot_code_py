@@ -3,11 +3,13 @@ from wpilib import TimedRobot, XboxController
 
 from robot.subsystems.arm import Arm, ArmPosition
 from robot.subsystems.drivetrain import Drivetrain
+from robot.subsystems.claw import Claw
 from robot.constants import *
 
 
 class Robot(TimedRobot):
     arm = Arm()
+    claw = Claw()
     drivetrain = Drivetrain()
 
     driver = XboxController(0)
@@ -34,6 +36,9 @@ class Robot(TimedRobot):
 
         if self.aux.getXButtonPressed():
             self.arm.set_position(ArmPosition.HIGH)
+
+        if self.aux.getLeftBumperPressed():
+            self.claw.toggle()
 
         self.arm.periodic()
 

@@ -2,6 +2,11 @@ from math import pi
 
 from wpimath.kinematics import DifferentialDriveKinematics
 
+# ----- CLAW -----
+
+CLAW_CHANNEL = 6
+CLAW_PHOTO = 2
+
 # ----- DRIVETRAIN -----
 
 DRIVE_LB_MOTOR = 10
