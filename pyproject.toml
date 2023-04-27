@@ -23,7 +23,7 @@ dev = [
 ]
 
 [tool.pdm.scripts]
-robot = "python -m robot"
-sim = "python -m robot sim"
-deploy = "python -m robot deploy"
+robot = "python entry.py"
+sim = "python entry.py sim"
+deploy = "python entry.py deploy --nonstandard"
 format = "black ."
