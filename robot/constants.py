@@ -1,7 +1,6 @@
 from math import pi
 
-from wpilib import Units
-from wpimath.kinematics import DifferentialDriveKinematcis
+from wpimath.kinematics import DifferentialDriveKinematics
 
 # ----- DRIVETRAIN -----
 
@@ -9,15 +8,15 @@ DRIVE_LB_MOTOR = 10
 DRIVE_LF_MOTOR = 11
 
 DRIVE_RB_MOTOR = 12
-DRIVE_LB_MOTOR = 13
+DRIVE_RF_MOTOR = 13
 
 DRIVE_ENC_CPR = 2048
-DRIVE_WHEEL_DIAMETER = Units.inchesToMeters(6)
+DRIVE_WHEEL_DIAMETER = 6 * 0.0254
 DRIVE_ENC_DPR = DRIVE_WHEEL_DIAMETER * pi
 DRIVE_GEARBOX = (34/40) * (14/50)
 
-DRIVE_TRACK_WIDTH = Units.inchesToMeters(21)
-DRIVE_KINEMATCIS = DifferentialDriveKinematics(DRIVE_TRACK_WIDTH)
+DRIVE_TRACK_WIDTH = 21 * 0.0254
+DRIVE_KINEMATICS = DifferentialDriveKinematics(DRIVE_TRACK_WIDTH)
 
 DRIVE_MAX_SPEED = 6
 DRIVE_MAX_ROT_SPEED = 6

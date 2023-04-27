@@ -1,10 +1,14 @@
+import wpimath
 from wpilib import TimedRobot, XboxController
 
 from robot.subsystems.arm import Arm, ArmPosition
+from robot.subsystems.drivetrain import Drivetrain
+from robot.constants import *
 
 
 class Robot(TimedRobot):
     arm = Arm()
+    drivetrain = Drivetrain()
 
     driver = XboxController(0)
     aux = XboxController(1)
@@ -13,6 +17,12 @@ class Robot(TimedRobot):
         pass
 
     def teleopPeriodic(self):
+
+        forward = wpimath.applyDeadband(self.driver.getLeftY(), 0.2) * DRIVE_MAX_SPEED
+        rotation = wpimath.applyDeadband(self.driver.getRightX(), 0.2) * DRIVE_MAX_ROT_SPEED
+        print(forward, rotation)
+        self.drivetrain.arcade_drive(forward, rotation)
+
         if self.aux.getBButtonPressed():
             self.arm.set_position(ArmPosition.HOME)
 
