@@ -1,11 +1,12 @@
-from commands2 import TimedCommandRobot, CommandScheduler
+from commands2 import TimedCommandRobot
 from commands2.button import CommandXboxController
+from wpilib import SmartDashboard
 
 from robot.subsystems.arm import Arm, ArmPosition
 from robot.subsystems.drivetrain import Drivetrain
 from robot.subsystems.claw import Claw
 from robot.constants import *
-import robot.auto
+from robot.auto import AutoSelector
 
 class Robot(TimedCommandRobot):
     arm = Arm()
@@ -38,13 +39,15 @@ class Robot(TimedCommandRobot):
         self.drivetrain.setDefaultCommand(
             self.drivetrain.arcade_drive(self.driver.getLeftX, self.driver.getRightY)
         )
+        
+        SmartDashboard.putData("auto", AutoSelector(self))
 
     def teleopInit(self):
         if self._auto_cmd is not None:
             self._auto_cmd.cancel()
 
     def autoInit(self):
-        self._auto_cmd = None
+        self._auto_cmd = AutoSelector.getSelected()
 
         if self._auto_cmd is not None:
             self._auto_cmd.schedule()

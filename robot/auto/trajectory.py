@@ -1,2 +1,4 @@
+from commands2.cmd import print
+
 def drive_trajectory(robot, traj):
-    pass
+    return print("blah")
