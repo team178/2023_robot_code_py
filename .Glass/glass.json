@@ -11,7 +11,8 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/ArmView": "Mechanism2d",
-      "/SmartDashboard/Field": "Field2d"
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/auto": "String Chooser"
     },
     "windows": {
       "/SmartDashboard/ArmView": {

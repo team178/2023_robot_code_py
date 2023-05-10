@@ -55,7 +55,6 @@ class Arm(SubsystemBase):
     _upper_enc = DutyCycleEncoder(UPPER_ARM_ENCODER)
 
     def __init__(self):
-
         self._lower_motor.restoreFactoryDefaults()
         self._upper_motor.restoreFactoryDefaults()
 
@@ -126,7 +125,6 @@ class Arm(SubsystemBase):
         return self._upper_home.get()
 
     def periodic(self):
-
         lower_out = -self._lower_con.calculate(
             self.get_lower_position(), self._lower_setpoint
         )

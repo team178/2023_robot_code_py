@@ -8,6 +8,7 @@ from robot.subsystems.claw import Claw
 from robot.constants import *
 from robot.auto import AutoSelector
 
+
 class Robot(TimedCommandRobot):
     arm = Arm()
     claw = Claw()
@@ -23,7 +24,7 @@ class Robot(TimedCommandRobot):
 
         # Why no RobotContainer? Because it's unneeded boilerplate - Patrick
 
-        # Aux controller bindings
+        #* Aux controller bindings
         self.aux.B().onTrue(self.arm.set_position(ArmPosition.HOME))
 
         self.aux.Y().onTrue(self.arm.set_position(ArmPosition.SUBSTATION))
@@ -34,20 +35,21 @@ class Robot(TimedCommandRobot):
 
         self.aux.leftBumper().onTrue(self.claw.toggle())
 
-        # Drive controller bindings
-
+        #* Drive controller bindings
         self.drivetrain.setDefaultCommand(
             self.drivetrain.arcade_drive(self.driver.getLeftX, self.driver.getRightY)
         )
-        
+
         SmartDashboard.putData("auto", AutoSelector(self))
 
     def teleopInit(self):
         if self._auto_cmd is not None:
             self._auto_cmd.cancel()
 
-    def autoInit(self):
-        self._auto_cmd = AutoSelector.getSelected()
+    def autonomousInit(self):
+        self._auto_cmd = AutoSelector.get_selected()
 
         if self._auto_cmd is not None:
             self._auto_cmd.schedule()
+        else:
+            print("NO AUTO ROUTE SELECTED")

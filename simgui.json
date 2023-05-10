@@ -28,6 +28,13 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/auto": "String Chooser"
+    },
+    "windows": {
+      "/SmartDashboard/auto": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {

@@ -12,6 +12,7 @@ class PhysicsEngine:
     """
     Physics simulation setup
     """
+
     def __init__(self, physics_controller: PhysicsInterface, robot: "Robot"):
         self.physics_controller = physics_controller
 

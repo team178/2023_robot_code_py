@@ -5,13 +5,13 @@
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "731",
+      "height": "1043",
       "maximized": "0",
       "style": "0",
       "userScale": "2",
-      "width": "671",
-      "xpos": "687",
-      "ypos": "29"
+      "width": "948",
+      "xpos": "964",
+      "ypos": "404"
     }
   },
   "Window": {
@@ -19,6 +19,11 @@
       "Collapsed": "0",
       "Pos": "268,323",
       "Size": "400,200"
+    },
+    "###/SmartDashboard/auto": {
+      "Collapsed": "0",
+      "Pos": "256,589",
+      "Size": "254,54"
     },
     "###DIO": {
       "Collapsed": "0",
@@ -33,12 +38,12 @@
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "56,712",
-      "Size": "665,73"
+      "Size": "796,73"
     },
     "###NetworkTables": {
       "Collapsed": "0",
       "Pos": "160,79",
-      "Size": "412,296"
+      "Size": "607,366"
     },
     "###Other Devices": {
       "Collapsed": "0",
