@@ -1,8 +1,8 @@
 
 [project]
-name = ""
-version = ""
-description = ""
+name = "2023RobotCode"
+version = "0.0.1"
+description = "Robot code for our 2023 robot, Bender"
 authors = [
     {name = "Patrick Brennan", email = "brennanpatrick20@gmail.com"},
 ]
