@@ -24,7 +24,7 @@ class Robot(TimedCommandRobot):
 
         # Why no RobotContainer? Because it's unneeded boilerplate - Patrick
 
-        #* Aux controller bindings
+        # * Aux controller bindings
         self.aux.B().onTrue(self.arm.set_position(ArmPosition.HOME))
 
         self.aux.Y().onTrue(self.arm.set_position(ArmPosition.SUBSTATION))
@@ -35,7 +35,7 @@ class Robot(TimedCommandRobot):
 
         self.aux.leftBumper().onTrue(self.claw.toggle())
 
-        #* Drive controller bindings
+        # * Drive controller bindings
         self.drivetrain.setDefaultCommand(
             self.drivetrain.arcade_drive(self.driver.getLeftX, self.driver.getRightY)
         )

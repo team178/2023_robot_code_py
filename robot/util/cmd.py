@@ -13,7 +13,7 @@ def run(func):
     def _cmd(*args, **kwargs) -> Command:
         requires = []
 
-        #* If part of a class that inherits from Subsystem, require it automatically
+        # * If part of a class that inherits from Subsystem, require it automatically
         if args and isinstance(args[0], Subsystem):
             requires = [args[0]]
 
@@ -33,7 +33,7 @@ def run_once(func):
     def _cmd(*args, **kwargs) -> Command:
         requires = []
 
-        #* If part of a class that inherits from Subsystem, require it automatically
+        # * If part of a class that inherits from Subsystem, require it automatically
         if args and isinstance(args[0], Subsystem):
             requires = [args[0]]
 
