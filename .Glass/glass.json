@@ -2,6 +2,9 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
+        "ArmView": {
+          "open": true
+        },
         "open": true
       }
     },

@@ -8,10 +8,12 @@ from wpilib import (
     Mechanism2d,
     SmartDashboard,
 )
+from commands2 import SubsystemBase
 from wpimath.controller import ArmFeedforward, PIDController
 from rev import CANSparkMax
 
 from robot.constants import *
+import robot.util.cmd as cmd
 
 
 class ArmPosition:
@@ -28,13 +30,13 @@ class ArmPosition:
     BACK = (5.407518, 2.951937)
 
 
-class Arm:
+class Arm(SubsystemBase):
     """
     The Arm subsystem
     """
 
-    _lower_setpoint: float
-    _upper_setpoint: float
+    _lower_setpoint: float = ArmPosition.HOME[0]
+    _upper_setpoint: float = ArmPosition.HOME[1]
 
     _lower_motor = CANSparkMax(LOWER_ARM_MOTOR, CANSparkMax.MotorType.kBrushless)
 
@@ -53,7 +55,6 @@ class Arm:
     _upper_enc = DutyCycleEncoder(UPPER_ARM_ENCODER)
 
     def __init__(self):
-        self.set_position(ArmPosition.HOME)
 
         self._lower_motor.restoreFactoryDefaults()
         self._upper_motor.restoreFactoryDefaults()
@@ -73,7 +74,10 @@ class Arm:
 
         SmartDashboard.putData("ArmView", self._mech_2d)
 
-    def set_position(self, pos: Tuple[float, float]) -> None:
+        super().__init__()
+
+    @cmd.run_once
+    def set_position(self, pos: Tuple[float, float]):
         """
         Set the position, or setpoint of the arm, using a tuple: (lower, upper)
         """
@@ -81,6 +85,7 @@ class Arm:
         self._lower_setpoint = pos[0]
         self._upper_setpoint = pos[1]
 
+    @cmd.run
     def bump_lower_position(self, bump: float):
         """
         'Bump' the lower arm position.
@@ -88,6 +93,7 @@ class Arm:
         """
         self._lower_setpoint += bump
 
+    @cmd.run
     def bump_upper_position(self, bump: float):
         """
         'Bump' the upper arm position.
@@ -120,6 +126,7 @@ class Arm:
         return self._upper_home.get()
 
     def periodic(self):
+
         lower_out = -self._lower_con.calculate(
             self.get_lower_position(), self._lower_setpoint
         )
@@ -141,5 +148,6 @@ class Arm:
         else:
             self._upper_motor.setVoltage(upper_v)
 
+        # Output to Glass ArmView widget
         self._mech_lower.setAngle(238 + math.degrees(self.get_lower_position()))
         self._mech_upper.setAngle(180 - math.degrees(self.get_upper_position()))
