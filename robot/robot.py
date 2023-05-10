@@ -5,7 +5,7 @@ from robot.subsystems.arm import Arm, ArmPosition
 from robot.subsystems.drivetrain import Drivetrain
 from robot.subsystems.claw import Claw
 from robot.constants import *
-
+import robot.auto
 
 class Robot(TimedCommandRobot):
     arm = Arm()

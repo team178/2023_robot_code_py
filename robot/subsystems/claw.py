@@ -16,3 +16,6 @@ class Claw(SubsystemBase):
     @cmd.run_once
     def toggle(self):
         self._solenoid.toggle()
+
+    def get_photosensor(self) -> bool:
+        return self._photosensor.get()
