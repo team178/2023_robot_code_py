@@ -1,9 +1,11 @@
 from typing import Callable
+from ntcore import NetworkTable, NetworkTableInstance
 
 import wpimath
-from wpilib import ADXRS450_Gyro, AnalogGyro, SPI
+from wpilib import ADXRS450_Gyro, AnalogGyro, SPI, Field2d, SmartDashboard, Timer
 from wpimath.controller import PIDController, SimpleMotorFeedforwardMeters
-from wpimath.geometry import Rotation2d
+from wpimath.geometry import Rotation2d, Pose2d
+from wpimath.estimator import DifferentialDrivePoseEstimator
 from wpimath.kinematics import DifferentialDriveWheelSpeeds, ChassisSpeeds
 from ctre import (
     NeutralMode,
@@ -32,6 +34,10 @@ class Drivetrain(SubsystemBase):
     _right_controller = PIDController(**DRIVE_PID)
 
     _ff = SimpleMotorFeedforwardMeters(**DRIVE_FF)
+
+    _pose_estimator: DifferentialDrivePoseEstimator
+    _field = Field2d()
+    _limelight: NetworkTable = NetworkTableInstance.getDefault().getTable("limelight")
 
     def __init__(self):
         super().__init__()
@@ -70,6 +76,16 @@ class Drivetrain(SubsystemBase):
         self._right_follower.configStatorCurrentLimit(cur_limit)
         self._left_follower.configStatorCurrentLimit(cur_limit)
 
+        self._pose_estimator = DifferentialDrivePoseEstimator(
+            DRIVE_KINEMATICS,
+            self.get_gyro_rotation(),
+            self.get_left_encoder_pos(),
+            self.get_right_encoder_pos(),
+            Pose2d(),
+        )
+
+        SmartDashboard.putData(self._field)
+
     def calibrate_gyro(self) -> None:
         self._gyro.calibrate()
         self._level.calibrate()
@@ -80,6 +96,13 @@ class Drivetrain(SubsystemBase):
 
     def get_gyro_heading(self) -> float:
         return self._gyro.getAngle()
+
+    @cmd.run_once
+    def reset_level(self):
+        self._level.reset()
+
+    def get_level_heading(self) -> float:
+        return self._level.getAngle()
 
     def get_gyro_rotation(self) -> Rotation2d:
         return self._gyro.getRotation2d()
@@ -104,6 +127,11 @@ class Drivetrain(SubsystemBase):
             self._left_motor.getSelectedSensorPosition() / DRIVE_ENC_CPR
         )
 
+    def get_right_encoder_pos(self):
+        return self.talon_to_meters(
+            self._right_motor.getSelectedSensorPosition() / DRIVE_ENC_CPR
+        )
+
     def tank_drive_volts(self, left: float, right: float) -> None:
         self._left_motor.setVoltage(left)
         self._right_motor.setVoltage(right)
@@ -122,7 +150,60 @@ class Drivetrain(SubsystemBase):
 
     @cmd.run
     def arcade_drive(self, forward: Callable[[], float], rotation: Callable[[], float]):
-        fwd = wpimath.applyDeadband(forward(), 0.2) * DRIVE_MAX_SPEED
-        rot = wpimath.applyDeadband(rotation(), 0.2) * DRIVE_MAX_ROT_SPEED
+        self._arcade(forward(), rotation())
+
+    def _arcade(self, x: float, z: float):
+        fwd = wpimath.applyDeadband(x, 0.2) * DRIVE_MAX_SPEED
+        rot = wpimath.applyDeadband(z, 0.2) * DRIVE_MAX_ROT_SPEED
         wheel_speeds = DRIVE_KINEMATICS.toWheelSpeeds(ChassisSpeeds(-fwd, 0.0, -rot))
         self.use_wheel_speeds(wheel_speeds)
+
+    @cmd.run
+    def drive_until_level(self, speed: float):
+        """
+        Drive at the provided `speed` until the robot is leveled.
+        Negative speed is backwards, positive forwards.
+        """
+        if -8 > self.get_level_heading():
+            self._arcade(speed, 0)
+        elif self.get_level_heading() > 8:
+            self._arcade(-speed, 0)
+        else:
+            self._arcade(0, 0)
+
+    def reset_pose(self, pose: Pose2d):
+        self._pose_estimator.resetPosition(
+            self.get_gyro_rotation(),
+            self.get_left_encoder_pos(),
+            self.get_right_encoder_pos(),
+            pose,
+        )
+
+    def get_pose(self):
+        return self._pose_estimator.getEstimatedPosition()
+
+    def periodic(self):
+        self._pose_estimator.update(
+            self.get_gyro_rotation(),
+            self.get_left_encoder_pos(),
+            self.get_right_encoder_pos(),
+        )
+
+        if self._limelight.containsKey("botpose"):
+            entry = self._limelight.getNumberArray("botpose", [])
+
+            if entry:
+                # Limelight centers it's poses around the center of the field while
+                # the estimator does it around the bottom left corner, so we offset
+                # it here.
+                pose = Pose2d(
+                    entry[0] + FIELD_LENGTH / 2,
+                    entry[1] + FIELD_WIDTH / 2,
+                    Rotation2d.fromDegrees(entry[5]),
+                )
+
+                self._pose_estimator.addVisionMeasurement(
+                    pose, Timer.getFPGATimestamp() - (entry[6] / 1000)
+                )
+
+        self._field.setRobotPose(self._pose_estimator.getEstimatedPosition())

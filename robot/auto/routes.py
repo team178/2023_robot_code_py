@@ -1,9 +1,19 @@
 from commands2 import Command, WaitCommand
-from commands2.cmd import sequence, waitUntil
+from commands2.cmd import sequence, waitUntil, run, runOnce
 
-from robot.auto.trajectory import drive_trajectory
+from robot.auto.trajectory import DriveTrajectory, load_trajectory
 from robot.subsystems.arm import ArmPosition
 from robot.auto.selector import AutoSelector as auto
+
+# Trajectories
+SUB_TO_CUBE = load_trajectory("SubDriveToCube", 1.75, 5, True)
+FUNNY = load_trajectory("SubDriveToCube", 1.75, 5, True)
+SUB_TO_GRID = load_trajectory("SubDriveToGrid", 1.5, 5)
+
+BUMP_TO_CUBE = load_trajectory("BumpDriveToCube", 1.0, 5, True)
+BUMP_TO_GRID = load_trajectory("BumpDriveToGrid", 1.0, 5)
+
+GET_ON_CHARGE = load_trajectory("MidGetOnCharge", 1.75, True)
 
 
 @auto.route("PlaceHigh")
@@ -19,8 +29,16 @@ def place_high(robot) -> Command:
 
 
 @auto.route("MidCubeBalance")
-def cube_balance(robot: "Robot"):
-    return sequence(place_high(robot))
+def cube_balance(robot):
+    # fmt: off
+    return sequence(
+        place_high(robot),
+        WaitCommand(1),
+        robot.drivetrain.reset_level(),
+        DriveTrajectory(robot, GET_ON_CHARGE),
+        robot.drivetrain.drive_until_level(-0.4)
+    )
+    # fmt: on
 
 
 @auto.route("SubConeCube")
@@ -28,7 +46,7 @@ def sub_cone_cube(robot):
     return sequence(
         place_high(robot),
         WaitCommand(0.2),
-        drive_trajectory(robot, None).deadlineWith(
+        DriveTrajectory(robot, SUB_TO_CUBE).deadlineWith(
             sequence(
                 WaitCommand(0.7),
                 robot.arm.set_position(ArmPosition.BACK),
@@ -40,10 +58,10 @@ def sub_cone_cube(robot):
         robot.claw.close(),
         WaitCommand(0.3),
         robot.arm.set_position(ArmPosition.HOME),
-        drive_trajectory(robot, None),
+        DriveTrajectory(robot, SUB_TO_GRID),
         place_high(robot),
         WaitCommand(0.2),
-        drive_trajectory(robot, None),
+        DriveTrajectory(robot, FUNNY),
     )
 
 
@@ -53,7 +71,7 @@ def sub_cone_leave(robot):
     return sequence(
         place_high(robot),
         WaitCommand(0.2),
-        drive_trajectory(robot, None))
+        DriveTrajectory(robot, SUB_TO_CUBE))
     # fmt: on
 
 
@@ -62,7 +80,7 @@ def bump_cone_cube(robot):
     return sequence(
         place_high(robot),
         WaitCommand(0.2),
-        drive_trajectory(robot, None).deadlineWith(
+        DriveTrajectory(robot, BUMP_TO_CUBE).deadlineWith(
             sequence(
                 WaitCommand(0.7),
                 robot.arm.set_position(ArmPosition.BACK),
@@ -74,10 +92,8 @@ def bump_cone_cube(robot):
         robot.claw.close(),
         WaitCommand(0.3),
         robot.arm.set_position(ArmPosition.HOME),
-        drive_trajectory(robot, None),
+        DriveTrajectory(robot, BUMP_TO_GRID),
         place_high(robot),
-        WaitCommand(0.2),
-        drive_trajectory(robot, None),
     )
 
 
@@ -87,5 +103,5 @@ def bump_cone_leave(robot):
     return sequence(
         place_high(robot),
         WaitCommand(0.2),
-        drive_trajectory(robot, None))
+        DriveTrajectory(robot, BUMP_TO_CUBE))
     # fmt: on

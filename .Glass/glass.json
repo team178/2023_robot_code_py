@@ -1,13 +1,5 @@
 {
   "NetworkTables": {
-    "transitory": {
-      "SmartDashboard": {
-        "ArmView": {
-          "open": true
-        },
-        "open": true
-      }
-    },
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/ArmView": "Mechanism2d",
@@ -16,6 +8,11 @@
     },
     "windows": {
       "/SmartDashboard/ArmView": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Field": {
         "window": {
           "visible": true
         }
