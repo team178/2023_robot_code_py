@@ -7,8 +7,8 @@ in2m = lambda x: x * 0.0254
 
 # ----- FIELD -----
 
-FIELD_LENGTH = in2m(54)
-FIELD_WIDTH = in2m(32)
+FIELD_LENGTH = in2m(54 * 12)
+FIELD_WIDTH = in2m(32 * 12)
 
 # ----- CLAW -----
 

@@ -1,5 +1,5 @@
 from commands2 import Command, WaitCommand
-from commands2.cmd import sequence, waitUntil, run, runOnce
+from commands2.cmd import sequence, waitUntil
 
 from robot.auto.trajectory import DriveTrajectory, load_trajectory
 from robot.subsystems.arm import ArmPosition
@@ -44,6 +44,7 @@ def cube_balance(robot):
 @auto.route("SubConeCube")
 def sub_cone_cube(robot):
     return sequence(
+        robot.drivetrain.reset_pose(SUB_TO_CUBE.get_initial_state),
         place_high(robot),
         WaitCommand(0.2),
         DriveTrajectory(robot, SUB_TO_CUBE).deadlineWith(
@@ -51,8 +52,7 @@ def sub_cone_cube(robot):
                 WaitCommand(0.7),
                 robot.arm.set_position(ArmPosition.BACK),
                 robot.claw.open(),
-                waitUntil(robot.claw.get_photosensor),
-                robot.claw.close(),
+                waitUntil(robot.claw.get_photosensor).andThen(robot.claw.close())
             )
         ),
         robot.claw.close(),

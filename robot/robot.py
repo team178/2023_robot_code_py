@@ -45,11 +45,18 @@ class Robot(TimedCommandRobot):
     def teleopInit(self):
         if self._auto_cmd is not None:
             self._auto_cmd.cancel()
+        self.drivetrain.set_wheel_speeds(0, 0)
 
     def autonomousInit(self):
         self._auto_cmd = AutoSelector.get_selected()
+        self.drivetrain.set_wheel_speeds(0, 0)
 
         if self._auto_cmd is not None:
             self._auto_cmd.schedule()
         else:
             print("NO AUTO ROUTE SELECTED")
+
+    def disabledInit(self) -> None:
+        if self._auto_cmd is not None:
+            self._auto_cmd.cancel()
+        self.drivetrain.set_wheel_speeds(0, 0)

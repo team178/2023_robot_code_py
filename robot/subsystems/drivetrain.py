@@ -84,6 +84,8 @@ class Drivetrain(SubsystemBase):
             Pose2d(),
         )
 
+        self._pose_estimator.setVisionMeasurementStdDevs((5, 5, 5))
+
         SmartDashboard.putData(self._field)
 
     def calibrate_gyro(self) -> None:
@@ -171,12 +173,13 @@ class Drivetrain(SubsystemBase):
         else:
             self._arcade(0, 0)
 
-    def reset_pose(self, pose: Pose2d):
+    @cmd.run_once
+    def reset_pose(self, pose_suppiler):
         self._pose_estimator.resetPosition(
             self.get_gyro_rotation(),
             self.get_left_encoder_pos(),
             self.get_right_encoder_pos(),
-            pose,
+            pose_suppiler(),
         )
 
     def get_pose(self):
@@ -192,13 +195,13 @@ class Drivetrain(SubsystemBase):
         if self._limelight.containsKey("botpose"):
             entry = self._limelight.getNumberArray("botpose", [])
 
-            if entry:
+            if entry[0] != 0:
                 # Limelight centers it's poses around the center of the field while
                 # the estimator does it around the bottom left corner, so we offset
                 # it here.
                 pose = Pose2d(
-                    entry[0] + FIELD_LENGTH / 2,
-                    entry[1] + FIELD_WIDTH / 2,
+                    entry[0] + (FIELD_LENGTH / 2),
+                    entry[1] + (FIELD_WIDTH / 2),
                     Rotation2d.fromDegrees(entry[5]),
                 )
 

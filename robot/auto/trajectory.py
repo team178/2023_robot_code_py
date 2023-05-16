@@ -46,6 +46,9 @@ class Trajectories:
             return self._red
         else:
             return self._blue
+        
+    def get_initial_state(self) -> Pose2d:
+        return self.trajectory.initialPose()
 
 
 def load_trajectory(name: str, *args, **kwargs) -> Trajectories:
