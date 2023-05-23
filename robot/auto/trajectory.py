@@ -1,17 +1,21 @@
 import math
-from commands2 import CommandBase
 
+from commands2 import CommandBase
 from wpilib import DriverStation, Timer
 from wpimath.controller import RamseteController
 from wpimath.kinematics import ChassisSpeeds
 from wpimath.trajectory import Trajectory
 from wpimath.geometry import Pose2d, Rotation2d
-from pathplannerlib import PathPlanner, PathPlannerTrajectory
+from pathplannerlib import PathPlanner
 
 from robot.constants import *
 
 
-def mirror_trajectory(traj: Trajectory):
+def mirror_trajectory(traj: Trajectory) -> Trajectory:
+    """
+    Mirror a Trajectory across the Y axis of the field. Requires the FIELD_LENGTH
+    constant to be adjusted per-season.
+    """
     return Trajectory(
         [
             Trajectory.State(
@@ -41,7 +45,7 @@ class Trajectories:
         self._red = mirror_trajectory(trajectory)
 
     @property
-    def trajectory(self):
+    def trajectory(self) -> Trajectory:
         if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
             return self._red
         else:
@@ -59,7 +63,8 @@ def load_trajectory(name: str, *args, **kwargs) -> Trajectories:
 
 class DriveTrajectory(CommandBase):
     """
-    Uses a RamseteController to drive along a provided Trajectory
+    Uses a RamseteController to drive along a provided Trajectory, or along
+    a Trajectory provided by a Trajectories object.
     """
 
     def __init__(self, robot, trajectory: Trajectories | Trajectory):

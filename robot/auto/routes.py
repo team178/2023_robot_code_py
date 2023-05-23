@@ -5,6 +5,24 @@ from robot.auto.trajectory import DriveTrajectory, load_trajectory
 from robot.subsystems.arm import ArmPosition
 from robot.auto.selector import AutoSelector as auto
 
+"""
+All of our autonomous routes are defined here.
+
+To create an auto route, the static `route` decorator of the `AutoSelector`
+class can be used on a function or class, which takes `robot` as it's first
+parameter. See `AutoSelector.route`'s docstring in `selector.py` to see more.
+
+---
+
+Why did I do it this way? Well, for one, it's a lot cleaner than making a bunch
+of classes for each individual command.
+
+It's also a way to quickly make new auto commands, without having to hardcode 
+function or class Command into our AutoSelector to show it as an option.
+Python's decorators make it really easy to make easily expandable systems such
+as this.
+"""
+
 # Trajectories
 SUB_TO_CUBE = load_trajectory("SubDriveToCube", 1.75, 5, True)
 FUNNY = load_trajectory("SubDriveToCube", 1.75, 5, True)
@@ -29,7 +47,7 @@ def place_high(robot) -> Command:
 
 
 @auto.route("MidCubeBalance")
-def cube_balance(robot):
+def cube_balance(robot) -> Command:
     # fmt: off
     return sequence(
         place_high(robot),
@@ -42,7 +60,7 @@ def cube_balance(robot):
 
 
 @auto.route("SubConeCube")
-def sub_cone_cube(robot):
+def sub_cone_cube(robot) -> Command:
     return sequence(
         robot.drivetrain.reset_pose(SUB_TO_CUBE.get_initial_state),
         place_high(robot),
@@ -66,7 +84,7 @@ def sub_cone_cube(robot):
 
 
 @auto.route("SubConeLeave")
-def sub_cone_leave(robot):
+def sub_cone_leave(robot) -> Command:
     # fmt: off
     return sequence(
         place_high(robot),
@@ -76,7 +94,7 @@ def sub_cone_leave(robot):
 
 
 @auto.route("BumpConeCube")
-def bump_cone_cube(robot):
+def bump_cone_cube(robot) -> Command:
     return sequence(
         place_high(robot),
         WaitCommand(0.2),
@@ -98,7 +116,7 @@ def bump_cone_cube(robot):
 
 
 @auto.route("BumpConeLeave")
-def bump_cone_leave(robot):
+def bump_cone_leave(robot) -> Command:
     # fmt: off
     return sequence(
         place_high(robot),

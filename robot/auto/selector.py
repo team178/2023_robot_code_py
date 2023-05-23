@@ -6,6 +6,8 @@ class AutoSelector(SendableChooser):
     Auto selector class. Extends a SendableChooser to be a singleton so we
     don't have to worry about instances, and provides a decorator for easily
     adding auto commands.
+    
+    Just like a SendableChooser, this can be published to SmartDashboard.
     """
 
     _instance: "AutoSelector" = None

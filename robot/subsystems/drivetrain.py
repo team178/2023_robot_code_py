@@ -88,11 +88,11 @@ class Drivetrain(SubsystemBase):
 
         SmartDashboard.putData(self._field)
 
-    def calibrate_gyro(self) -> None:
+    def calibrate_gyro(self):
         self._gyro.calibrate()
         self._level.calibrate()
 
-    def reset_encoders(self) -> None:
+    def reset_encoders(self):
         self._left_motor.setSelectedSensorPosition(0)
         self._right_motor.setSelectedSensorPosition(0)
 
@@ -114,22 +114,22 @@ class Drivetrain(SubsystemBase):
         pos_mtrs = wheel_rot * DRIVE_ENC_DPR
         return pos_mtrs
 
-    def get_left_encoder_vel(self):
+    def get_left_encoder_vel(self) -> float:
         return self.talon_to_meters(
             self._left_motor.getSelectedSensorVelocity() / DRIVE_ENC_CPR * 10
         )
 
-    def get_right_encoder_vel(self):
+    def get_right_encoder_vel(self) -> float:
         return self.talon_to_meters(
             self._right_motor.getSelectedSensorVelocity() / DRIVE_ENC_CPR * 10
         )
 
-    def get_left_encoder_pos(self):
+    def get_left_encoder_pos(self) -> float:
         return self.talon_to_meters(
             self._left_motor.getSelectedSensorPosition() / DRIVE_ENC_CPR
         )
 
-    def get_right_encoder_pos(self):
+    def get_right_encoder_pos(self) -> float:
         return self.talon_to_meters(
             self._right_motor.getSelectedSensorPosition() / DRIVE_ENC_CPR
         )
@@ -182,7 +182,7 @@ class Drivetrain(SubsystemBase):
             pose_suppiler(),
         )
 
-    def get_pose(self):
+    def get_pose(self) -> Pose2d:
         return self._pose_estimator.getEstimatedPosition()
 
     def periodic(self):

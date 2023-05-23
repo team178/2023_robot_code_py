@@ -45,7 +45,8 @@ class Robot(TimedCommandRobot):
     def teleopInit(self):
         if self._auto_cmd is not None:
             self._auto_cmd.cancel()
-        self.drivetrain.set_wheel_speeds(0, 0)
+        self.drivetrain.set_wheel_speeds(0, 0) 
+
 
     def autonomousInit(self):
         self._auto_cmd = AutoSelector.get_selected()
@@ -59,4 +60,7 @@ class Robot(TimedCommandRobot):
     def disabledInit(self) -> None:
         if self._auto_cmd is not None:
             self._auto_cmd.cancel()
+
+        # added after the robot punched a locker after re-enabling autonomous
+        # always remember the turn OFF the motors if you want it to stay still
         self.drivetrain.set_wheel_speeds(0, 0)

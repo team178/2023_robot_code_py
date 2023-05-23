@@ -1,13 +1,12 @@
 
 [project]
-name = "2023RobotCode"
+name = "2023_robot_code"
 version = "0.0.1"
-description = "Robot code for our 2023 robot, Bender"
+description = "Robot code for our 2023 robot, Bender, but in Python!"
 authors = [
     {name = "Patrick Brennan", email = "brennanpatrick20@gmail.com"},
 ]
 requires-python = ">=3.7,<3.12"
-license = {text = "MIT"}
 
 dependencies = [
     "robotpy>=2023.4.3.0",
