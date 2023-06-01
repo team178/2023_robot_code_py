@@ -37,7 +37,7 @@ class Robot(TimedCommandRobot):
 
         # * Drive controller bindings
         self.drivetrain.setDefaultCommand(
-            self.drivetrain.arcade_drive(self.driver.getLeftX, self.driver.getRightY)
+            self.drivetrain.arcade_drive(self.driver.getLeftY, self.driver.getRightX)
         )
 
         SmartDashboard.putData("auto", AutoSelector(self))
